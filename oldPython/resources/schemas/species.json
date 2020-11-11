@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema",
-  "title": "People",
+  "title": "Species",
   "description": "A species within the Star Wars universe",
   "type": "object",
   "properties": {

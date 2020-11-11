@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema",
-  "title": "Starship",
+  "title": "Vehicles",
   "description": "A vehicle.",
   "type": "object",
   "properties": {

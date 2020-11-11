@@ -1,26 +1,36 @@
 {
-    "name": "cap",
-    "version": "1.0.0",
-    "description": "A simple CAP project.",
-    "repository": "<Add your repository here>",
-    "license": "UNLICENSED",
-    "private": true,
-    "dependencies": {
-        "@sap/cds": "^4",
-        "express": "^4",
-        "@sap/hana-client": "^2.4.177"
+  "name": "cap",
+  "version": "1.0.0",
+  "description": "A simple CAP project.",
+  "repository": "<Add your repository here>",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@sap/cds": "^4",
+    "express": "^4",
+    "@sap/hana-client": "^2.6"
+  },
+  "devDependencies": {
+    "sqlite3": "^5"
+  },
+  "scripts": {
+    "hana": "cds deploy --to hana:starwars --auto-undeploy",
+    "start": "cds run",
+    "build": "cds build/all --clean"
+  },
+  "cds": {
+    "preview": {
+      "ui5": {
+        "version": "1.80.2"
+      }
     },
-    "devDependencies": {
-        "sqlite3": "^5"
+    "hana": {
+      "deploy-format": "hdbtable"
     },
-    "scripts": {
-        "start": "npx cds run"
-    },
-    "cds": {
-        "requires": {
-            "db": {
-                "kind": "sql"
-            }
-        }
+    "requires": {
+      "db": {
+        "kind": "hana"
+      }
     }
+  }
 }
