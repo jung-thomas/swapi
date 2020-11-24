@@ -18,7 +18,6 @@ entity Film : cuid, managed {
     starships     : Association to many Film2Starships on starships.film = $self;
     vehicles      : Association to many Film2Vehicles on vehicles.film = $self;
     species       : Association to many Film2Species on species.film = $self;
-    url           : String;
 }
 
 annotate Film with @(title : '{i18n>Film}') {
@@ -33,32 +32,31 @@ annotate Film with @(title : '{i18n>Film}') {
     starships     @title : '{i18n>starships}';
     vehicles      @title : '{i18n>vehicles}';
     species       @title : '{i18n>species}';
-    url           @title : '{i18n>url}';
 }
 
 entity Film2People {
-    film : Association to Film;
-    people: Association to People;
+    key film : Association to Film;
+    key people: Association to People;
 }
 
 entity Film2Planets {
-    film : Association to Film;
-    planet: Association to Planet;
+    key film : Association to Film;
+    key planet: Association to Planet;
 }
 
 entity Film2Starships {
-    film : Association to Film;
-    starship: Association to Starship;
+    key film : Association to Film;
+    key starship: Association to Starship;
 }
 
 entity Film2Vehicles {
-    film : Association to Film;
-    vehicle: Association to Vehicles;
+    key film : Association to Film;
+    key vehicle: Association to Vehicles;
 }
 
 entity Film2Species {
-    film : Association to Film;
-    specie: Association to Species;
+    key film : Association to Film;
+    key specie: Association to Species;
 }
 entity People : cuid, managed {
     name       : String;
@@ -70,15 +68,14 @@ entity People : cuid, managed {
     birth_year : String;
     gender     : String;
     homeworld  : Association to Planet;
-    films      : Association to many People2Film on films.people = $self;
-    species    : Association to many People2Species on species.people = $self;
-    vehicles   : Association to many People2Vehicles on vehicles.people = $self;
-    starships  : Association to many People2Starships on starships.people = $self;
-    url        : String;
+    films      : Association to many Film2People on films.people = $self;
+    species    : Association to many Species2People on species.people = $self;
+    vehicles   : Association to many Vehicle2Pilot on vehicles.pilot = $self;
+    starships  : Association to many Starship2Pilot on starships.pilot = $self;
 }
 
 annotate People with @(title : '{i18n>People}') {
-    name       @title : '{i18n>name}';
+    name       @title : '{i18n>peopleName}';
     height     @title : '{i18n>height}';
     mass       @title : '{i18n>mass}';
     hair_color @title : '{i18n>hair_color}';
@@ -91,28 +88,6 @@ annotate People with @(title : '{i18n>People}') {
     species    @title : '{i18n>species}';
     vehicles   @title : '{i18n>vehicles}';
     starships  @title : '{i18n>starships}';
-    url        @title : '{i18n>url}';
-}
-
-
-entity People2Film {
-    people: Association to People;    
-    film : Association to Film;
-}
-
-entity People2Starships {
-    people : Association to People;
-    starship: Association to Starship;
-}
-
-entity People2Vehicles {
-    people : Association to People;
-    vehicle: Association to Vehicles;
-}
-
-entity People2Species {
-    people : Association to People;
-    specie: Association to Species;
 }
 
 entity Planet : cuid, managed {
@@ -125,9 +100,8 @@ entity Planet : cuid, managed {
     climate         : String;
     terrain         : String;
     surface_water   : String;
-    films           : Association to many Planet2Films on films.planet = $self;
+    films           : Association to many Film2Planets on films.planet = $self;
     residents       : Association to many Planet2People on residents.planet = $self;
-    url             : String;
 }
 
 annotate Planet with @(title : '{i18n>Planet}') {
@@ -142,17 +116,10 @@ annotate Planet with @(title : '{i18n>Planet}') {
     surface_water   @title : '{i18n>surface_water}';
     films           @title : '{i18n>films}';
     residents       @title : '{i18n>residents}';
-    url             @title : '{i18n>url}';
 }
-
-entity Planet2Films {
-    planet : Association to Planet;
-    film: Association to Film;
-}
-
 entity Planet2People {
-    planet : Association to Planet;
-    people: Association to People;
+    key planet : Association to Planet;
+    key people: Association to People;
 }
 entity Species : cuid, managed {
     name             : String;
@@ -163,11 +130,10 @@ entity Species : cuid, managed {
     hair_colors      : String;
     skin_colors      : String;
     eye_colors       : String;
-    homeworld        : String;
+    homeworld        : Association to Planet;
     language         : String;
     people           : Association to many Species2People on people.species = $self;
-    films            : Association to many Species2Films on films.species = $self;
-    url              : String;
+    films            : Association to many Film2Species on films.specie = $self;
 }
 
 annotate Species with @(title : '{i18n>Species}') {
@@ -183,17 +149,12 @@ annotate Species with @(title : '{i18n>Species}') {
     language         @title : '{i18n>language}';
     people           @title : '{i18n>people}';
     films            @title : '{i18n>films}';
-    url              @title : '{i18n>url}';
 }
 entity Species2People {
-    species : Association to Species;
-    people: Association to People;
+    key species : Association to Species;
+    key people: Association to People;
 }
 
-entity Species2Films {
-    species : Association to Species;
-    film: Association to Film;
-}
 entity Starship : cuid, managed {
     name                   : String;
     model                  : String;
@@ -208,9 +169,8 @@ entity Starship : cuid, managed {
     MGLT                   : String;
     cargo_capacity         : String;
     consumables            : String;
-    films                  : Association to many Starship2Film on films.starship = $self;
+    films                  : Association to many Film2Starships on films.starship = $self;
     pilots                 : Association to many Starship2Pilot on pilots.starship = $self;
-    url                    : String;
 }
 
 annotate Starship with @(title : '{i18n>Starship}') {
@@ -229,17 +189,12 @@ annotate Starship with @(title : '{i18n>Starship}') {
     consumables            @title : '{i18n>consumables}';
     films                  @title : '{i18n>films}';
     pilots                 @title : '{i18n>pilots}';
-    url                    @title : '{i18n>url}';
 }
 
-entity Starship2Film {
-    starship : Association to Starship;
-    film: Association to Film;
-}
 
 entity Starship2Pilot {
-    starship : Association to Starship;    
-    pilot : Association to People;
+    key starship : Association to Starship;    
+    key pilot : Association to People;
 }
 
 entity Vehicles : cuid, managed {
@@ -254,9 +209,8 @@ entity Vehicles : cuid, managed {
     max_atmosphering_speed : String;
     cargo_capacity         : String;
     consumables            : String;
-    films                  : Association to many Vehicle2Film on films.vehicle = $self;
+    films                  : Association to many Film2Vehicles on films.vehicle = $self;
     pilots                 : Association to many Vehicle2Pilot on pilots.vehicle = $self;
-    url                    : String;
 }
 
 annotate Vehicles with @(title : '{i18n>Vehicles}') {
@@ -273,15 +227,9 @@ annotate Vehicles with @(title : '{i18n>Vehicles}') {
     consumables            @title : '{i18n>consumables}';
     films                  @title : '{i18n>films}';
     pilots                 @title : '{i18n>pilots}';
-    url                    @title : '{i18n>url}';
-}
-
-entity Vehicle2Film {
-    vehicle : Association to Vehicles;
-    film: Association to Film;
 }
 
 entity Vehicle2Pilot {
-    vehicle : Association to Vehicles;    
-    pilot : Association to People;
+    key vehicle : Association to Vehicles;    
+    key pilot : Association to People;
 }
