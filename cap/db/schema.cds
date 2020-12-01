@@ -85,10 +85,14 @@ entity People : cuid, managed {
 }
 
 annotate People with @(
-    title             : '{i18n>People}',
-    UI.Identification : [{
+    title              : '{i18n>People}',
+    UI.TextArrangement : #TextOnly,
+    cds.odata.valuelist,
+    Common.SemanticKey : [name],
+    UI.Identification  : [{
         $Type : 'UI.DataField',
-        Value : name,
+        Value : name
+
     }, ]
 ) {
     name       @title : '{i18n>peopleName}';
@@ -99,8 +103,10 @@ annotate People with @(
     eye_color  @title : '{i18n>eye_color}';
     birth_year @title : '{i18n>birth_year}';
     gender     @title : '{i18n>gender}';
+    //homeworld  @Common.Text : homeworld.name;
     homeworld  @(
         title            : '{i18n>homeworld}',
+        Common.Text      : homeworld.name,
         Common.ValueList : {
             CollectionPath : 'Planet',
             Parameters     : [
@@ -151,14 +157,29 @@ entity Planet : cuid, managed {
                           on residents.planet = $self;
 }
 
+annotate Planet with {
+    ID @Common.Text : name;
+}
+
 annotate Planet with @(
-    title             : '{i18n>Planet}',
-    UI.Identification : [{
+    title              : '{i18n>Planet}',
+    cds.odata.valuelist,
+    Common.SemanticKey : [name],
+    UI.TextArrangement : #TextOnly,
+    UI.Identification  : [{
         $Type : 'UI.DataField',
         Value : name,
     }, ]
 ) {
-    name            @title : '{i18n>planetName}';
+    ID              @(
+        ObjectModel.text.element : [name],
+        UI.Hidden                : true,
+        UI.HiddenFilter          : true
+    );
+    name            @(
+        title          : '{i18n>planetName}',
+        Common.TextFor : ID
+    );
     diameter        @title : '{i18n>diameter}';
     rotation_period @title : '{i18n>rotation_period}';
     orbital_period  @title : '{i18n>orbital_period}';
